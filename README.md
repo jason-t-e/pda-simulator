@@ -89,11 +89,6 @@ This project was built to:
 
 ---
 
-## Preview
-
-> Add screenshots here if required.
-
----
 
 ## License
 
