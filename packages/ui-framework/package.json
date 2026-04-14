@@ -1,0 +1,86 @@
+{
+  "name": "pda-sim-ui-framework",
+  "version": "1.0.0",
+  "description": "Production-ready, SSR-safe, tree-shakeable UI framework with slot-based components and typed variants.",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./theme.css": "./dist/theme.css"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm run build",
+    "release": "semantic-release",
+    "prepare": "husky"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
+    "@semantic-release/github": "^10.0.0",
+    "@semantic-release/npm": "^12.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "husky": "^9.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "semantic-release": "^24.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "design-system",
+    "typescript",
+    "ssr-safe",
+    "tree-shakeable",
+    "vercel",
+    "next.js",
+    "vite"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/ui-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/ui-framework/issues"
+  },
+  "homepage": "https://github.com/your-org/ui-framework#readme",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

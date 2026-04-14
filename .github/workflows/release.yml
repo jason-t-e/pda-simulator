@@ -1,0 +1,120 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main    # stable channel  → triggers semantic version bump + npm publish
+      - next    # canary channel  → triggers prerelease (@next on npm)
+    # Only run when package source changes — skip documentation-only commits
+    paths:
+      - "packages/ui-framework/src/**"
+      - "packages/ui-framework/package.json"
+      - "packages/ui-framework/tsup.config.ts"
+      - "packages/ui-framework/tsconfig.json"
+      - "packages/ui-framework/.releaserc.json"
+      - ".github/workflows/release.yml"
+
+defaults:
+  run:
+    working-directory: packages/ui-framework
+
+jobs:
+  # ─── Job 1: Validate ──────────────────────────────────────────────
+  validate:
+    name: Type Check & Build
+    runs-on: ubuntu-latest
+    outputs:
+      dist-key: ${{ steps.cache-key.outputs.key }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0               # full history required for semantic-release
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: packages/ui-framework/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify dist outputs
+        run: |
+          for f in dist/index.js dist/index.cjs dist/index.d.ts dist/theme.css; do
+            test -f "$f" || (echo "Missing: $f" && exit 1)
+          done
+          ESM=$(wc -c < dist/index.js)
+          echo "ESM size: ${ESM} bytes"
+          [ "$ESM" -lt 51200 ] || (echo "Bundle exceeds 50 KB limit" && exit 1)
+          echo "All outputs verified ✓"
+
+      - name: Generate cache key
+        id: cache-key
+        run: echo "key=dist-${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: packages/ui-framework/dist
+          retention-days: 1
+
+  # ─── Job 2: Semantic Release ──────────────────────────────────────
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    needs: validate
+
+    permissions:
+      contents: write      # push release commit + tag
+      issues: write        # comment on issues
+      pull-requests: write # comment on PRs
+      id-token: write      # npm provenance attestation
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false   # use RELEASE_TOKEN below for push access
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: packages/ui-framework/package-lock.json
+          registry-url: "https://registry.npmjs.org/"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: packages/ui-framework/dist
+
+      - name: Verify dist before release
+        run: |
+          test -f dist/index.js && echo "✓ ESM present"
+          test -f dist/index.cjs && echo "✓ CJS present"
+          test -f dist/index.d.ts && echo "✓ Types present"
+          test -f dist/theme.css && echo "✓ CSS present"
+
+      - name: Run Semantic Release
+        run: npx semantic-release
+        env:
+          # GITHUB_TOKEN allows semantic-release to create releases and tags
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN authenticates the npm publish step
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

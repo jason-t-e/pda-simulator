@@ -1,0 +1,27 @@
+<!-- Vite React Example App using @pda-sim/ui-framework -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Framework — Vite Example</title>
+    <!-- FOUC Prevention: Blocking theme initialization script -->
+    <script>
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem("ui-framework-theme"); } catch (e) {}
+        if (theme !== "light" && theme !== "dark") {
+          try {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          } catch (e) { theme = "dark"; }
+        }
+        document.documentElement.setAttribute("data-theme", theme);
+        window.__THEME__ = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDA Simulator</title>
+    <!--
+      CRITICAL: Blocking theme initialization script.
+      Runs synchronously before first paint to prevent FOUC.
+      Falls back to OS preference, then to 'dark' if all else fails.
+    -->
+    <script>
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('pda-sim-theme');
+        } catch (e) {
+          /* localStorage blocked (incognito, CSP, etc.) */
+        }
+        if (theme !== 'light' && theme !== 'dark') {
+          try {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } catch (e) {
+            theme = 'dark';
+          }
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+        window.__THEME__ = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

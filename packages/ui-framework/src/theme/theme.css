@@ -1,0 +1,158 @@
+/* @pda-sim/ui-framework — Design Tokens
+ * ──────────────────────────────────────────────────────────────────
+ * Import this CSS once at your application root:
+ *   import "@pda-sim/ui-framework/theme.css";
+ * ──────────────────────────────────────────────────────────────────
+ */
+
+/* ─── Dark Theme (default) ───────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-primary:    #0f1117;
+  --bg-secondary:  #161b27;
+  --bg-card:       #1a2035;
+  --bg-surface:    #1e2540;
+
+  --text-primary:  #e2e8f0;
+  --text-secondary:#94a3b8;
+  --text-dim:      #64748b;
+
+  --accent-color:  #6366f1;
+  --accent-hover:  #4f46e5;
+  --accent-muted:  rgba(99, 102, 241, 0.15);
+
+  --success:       #10b981;
+  --success-muted: rgba(16, 185, 129, 0.15);
+
+  --danger:        #ef4444;
+  --danger-muted:  rgba(239, 68, 68, 0.15);
+
+  --warning:       #f59e0b;
+  --warning-muted: rgba(245, 158, 11, 0.15);
+
+  --info:          #3b82f6;
+  --info-muted:    rgba(59, 130, 246, 0.15);
+
+  --neutral:       #64748b;
+  --neutral-muted: rgba(100, 116, 139, 0.15);
+
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --radius-sm:     4px;
+  --radius-md:     8px;
+  --radius-lg:     12px;
+  --radius-xl:     16px;
+
+  --space-xs:      4px;
+  --space-sm:      8px;
+  --space-md:      16px;
+  --space-lg:      24px;
+  --space-xl:      40px;
+
+  --transition:    150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:     0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg:     0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Light Theme ───────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-primary:    #f8fafc;
+  --bg-secondary:  #f1f5f9;
+  --bg-card:       #ffffff;
+  --bg-surface:    #f8fafc;
+
+  --text-primary:  #0f172a;
+  --text-secondary:#475569;
+  --text-dim:      #94a3b8;
+
+  --accent-color:  #4f46e5;
+  --accent-hover:  #4338ca;
+  --accent-muted:  rgba(79, 70, 229, 0.1);
+
+  --success:       #059669;
+  --success-muted: rgba(5, 150, 105, 0.1);
+
+  --danger:        #dc2626;
+  --danger-muted:  rgba(220, 38, 38, 0.1);
+
+  --warning:       #d97706;
+  --warning-muted: rgba(217, 119, 6, 0.1);
+
+  --info:          #2563eb;
+  --info-muted:    rgba(37, 99, 235, 0.1);
+
+  --neutral:       #94a3b8;
+  --neutral-muted: rgba(148, 163, 184, 0.12);
+
+  --border:        rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+
+  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:     0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg:     0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ─── Base Component Styles ────────────────────────────────────────
+   These are minimal structural styles. Override via className.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Container */
+.ds-container { width: 100%; margin: 0 auto; padding: 0 var(--space-md); }
+.container--sm  { max-width: 640px; }
+.container--md  { max-width: 860px; }
+.container--lg  { max-width: 1200px; }
+
+/* Stack */
+.ds-stack         { display: flex; }
+.layout-v-stack   { flex-direction: column; }
+.layout-h-stack   { flex-direction: row; align-items: center; }
+.layout-center    { justify-content: center; align-items: center; }
+.ds-gap--none     { gap: 0; }
+.ds-gap--xs       { gap: var(--space-xs); }
+.ds-gap--sm       { gap: var(--space-sm); }
+.ds-gap--md       { gap: var(--space-md); }
+.ds-gap--lg       { gap: var(--space-lg); }
+.ds-gap--xl       { gap: var(--space-xl); }
+
+/* ResultCard */
+.res-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+}
+.res-card__title  { font-size: 1.1rem; font-weight: 700; margin-bottom: var(--space-sm); color: var(--text-primary); }
+.res-card__status { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.05em; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); display: inline-block; }
+.res-card__divider{ height: 1px; background: var(--border); margin: var(--space-md) 0; }
+.res-card__reason { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+
+.res-card--success { border-color: var(--success); }
+.res-card--success .res-card__status { background: var(--success-muted); color: var(--success); }
+.res-card--danger  { border-color: var(--danger); }
+.res-card--danger  .res-card__status { background: var(--danger-muted);  color: var(--danger);  }
+.res-card--warning { border-color: var(--warning); }
+.res-card--warning .res-card__status { background: var(--warning-muted); color: var(--warning); }
+.res-card--info    { border-color: var(--info); }
+.res-card--info    .res-card__status { background: var(--info-muted);    color: var(--info);    }
+.res-card--neutral { border-color: var(--border); }
+.res-card--neutral .res-card__status { background: var(--neutral-muted); color: var(--neutral); }
+
+/* GPU-safe animations */
+.anim-entry { animation-duration: 350ms; animation-fill-mode: both; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn  { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+@keyframes slideIn  { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+
+.anim--fade-up  { animation-name: fadeUp; }
+.anim--fade-in  { animation-name: fadeIn; }
+.anim--scale-in { animation-name: scaleIn; }
+.anim--slide-in { animation-name: slideIn; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-entry { animation: none !important; }
+}

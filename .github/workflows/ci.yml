@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, next]
+    paths:
+      - "packages/ui-framework/**"
+  push:
+    branches-ignore: [main, next]
+    paths:
+      - "packages/ui-framework/**"
+
+defaults:
+  run:
+    working-directory: packages/ui-framework
+
+jobs:
+  ci:
+    name: "Node ${{ matrix.node-version }} — Type Check & Build"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: packages/ui-framework/package-lock.json
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+      - name: Verify dist integrity + bundle size
+        run: |
+          for f in dist/index.js dist/index.cjs dist/index.d.ts dist/theme.css; do
+            test -f "$f" || (echo "Missing: $f" && exit 1)
+          done
+          ESM=$(wc -c < dist/index.js)
+          CJS=$(wc -c < dist/index.cjs)
+          echo "ESM: ${ESM}B | CJS: ${CJS}B"
+          [ "$ESM" -lt 51200 ] || (echo "ESM bundle > 50KB! Check for accidentally bundled peer deps." && exit 1)
+
+  # Commitlint check on PRs to enforce conventional commits
+  commitlint:
+    name: Validate Commit Messages
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: packages/ui-framework/package-lock.json
+
+      - run: npm ci
+        working-directory: packages/ui-framework
+
+      - name: Lint commit messages
+        run: |
+          npx commitlint \
+            --from ${{ github.event.pull_request.base.sha }} \
+            --to   ${{ github.event.pull_request.head.sha }} \
+            --verbose
+        working-directory: packages/ui-framework
