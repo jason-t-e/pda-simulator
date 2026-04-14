@@ -4,7 +4,7 @@ An interactive web-based simulator for Pushdown Automata (PDA) that visualizes s
 
 ## Live Demo
 
-[https://pda-simulator-35nsvvza7-jasonte24-6092s-projects.vercel.app](https://pda-simulator-35nsvvza7-jasonte24-6092s-projects.vercel.app)
+[https://pda-simulator-beryl.vercel.app/](https://pda-simulator-beryl.vercel.app/)
 
 ## NPM Package (UI Framework)
 
