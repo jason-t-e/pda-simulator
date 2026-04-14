@@ -1,73 +1,100 @@
-# React + TypeScript + Vite
+Here is a clean, professional version with no emojis and no fluff:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## README.md
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+````md
+# PDA Simulator
 
-## React Compiler
+An interactive web-based simulator for Pushdown Automata (PDA) that visualizes state transitions, stack operations, and acceptance behavior in real time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Live Demo
+https://pda-simulator-35nsvvza7-jasonte24-6092s-projects.vercel.app
 
-## Expanding the ESLint configuration
+## NPM Package (UI Framework)
+https://www.npmjs.com/package/pda-sim-ui-framework
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## GitHub Repository
+https://github.com/jason-t-e/pda-simulator
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Description
+This simulator demonstrates how a Pushdown Automaton processes an input string step by step, showing transitions, stack updates, and final acceptance or rejection. It is designed to improve conceptual understanding through visualization.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Step-by-step PDA execution  
+- Stack visualization  
+- Acceptance and rejection detection  
+- Pumping Lemma simulation  
+- Modular UI framework published as an npm package  
+- Reusable and structured design system  
+
+## Tech Stack
+
+- React with TypeScript  
+- Vite  
+- Custom UI framework (pda-sim-ui-framework)  
+- Vercel for deployment  
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+````
+
+## Using the UI Framework
+
+```bash
+npm install pda-sim-ui-framework
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Example usage:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx
+import { ResultCard } from "pda-sim-ui-framework";
+import "pda-sim-ui-framework/theme.css";
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+export default function App() {
+  return (
+    <ResultCard
+      variant="success"
+      slots={{
+        title: "Simulation Conclusion",
+        status: "ACCEPTED",
+        reason: "Valid PDA computation"
+      }}
+    />
+  );
+}
+```
+
+## Purpose
+
+This project was built to:
+
+* Strengthen understanding of Theory of Computation concepts
+* Provide a visual tool for learning PDA behavior
+* Demonstrate system design from UI framework to deployment
+
+## Preview
+
+(Add screenshots here if required)
+
+## License
+
+MIT
+
+```
+
+---
+
+This version is:
+- clean  
+- formal  
+- submission-ready  
+- easy to scan  
+
+You can commit and push this directly.
 ```
